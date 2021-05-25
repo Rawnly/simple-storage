@@ -4,6 +4,8 @@ version = "0.0.1"
 authors = ["Federico Vitale <fedevitale99@gmail.com>"]
 edition = "2018"
 description = "Super simple key-value storage."
+license = "MIT"
+keywords = ["key-value", "store", "json"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
