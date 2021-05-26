@@ -2,10 +2,10 @@ name: Rust
 
 on:
   workflow_dispatch:
-#     inputs:
-#       version:
-#         required: false
-#         description: Version to publish
+    inputs:
+      version:
+        required: false
+        description: Version to publish
         
 
 env:
@@ -17,6 +17,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Update Version
+      if: github.event.inputs.version
+      run: |
+        new_version="${{ github.event.inputs.version }}"
+        old_version=$(cat Cargo.toml | grep "^version =" | awk -F"=" '{print $2}')
+        cat Cargo.toml | sed 's/${old_version}/${new_version}/g' > Cargo.toml
     - name: Build
       run: cargo build --verbose
     - name: Run tests
