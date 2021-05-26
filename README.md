@@ -1,29 +1,31 @@
 # Simple Storage
 > Simple, fast and easy to use key-value store.
 
-## Disclaimer 
-This project is not intended to be used for a production environment.
-
+## Installation
+```toml
+# Cargo.toml
+simple-storage = "0.0.2"
+```
 
 ## Usage
-
 ```rust
-
+  use std::io::Result;
   use simple_storage::{Storage, Value};
 
-  fn main() {
-    let mut storage = Storage::new("db.json");
+  fn main() -> Result<()> {
+    let mut storage = Storage::new("/tmp/db.json");
     storage.pull();
 
     // add key
-    storage
-      .put("username", Value::String("rawnly"));
+    storage.put("username", Value::String("rawnly"))?;
 
     // retrive key
-    let username = storage
-        .get("username")
-        .to_string()
-        .unwrap();
+    let username = match storage.get("username") {
+      Some(username) => username,
+      Err(key_not_found_error) => "rawnly" // handle the error here
+    }
+        
+    Ok(())
   }
-
 ```
+
