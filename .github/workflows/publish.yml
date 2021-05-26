@@ -35,5 +35,5 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - name: Publish
-      run: cargo publish ${{CARGO_TOKEN}}
+      run: cargo publish ${{ secrets.CARGO_TOKEN }}
       
