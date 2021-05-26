@@ -1,6 +1,6 @@
 [package]
 name = "simple-storage"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Federico Vitale <fedevitale99@gmail.com>"]
 edition = "2018"
 description = "Super simple key-value storage."
