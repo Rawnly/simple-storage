@@ -1,8 +1,21 @@
 use core::panic;
-use std::{collections::HashMap, fs::{File, read_to_string}, io::{Result, Write}, path::Path};
-use serde_json::{Value as JSONValue};
+use std::{
+  fmt,
+  path::Path,
+  collections::HashMap,
+  fs::{
+    File,
+    read_to_string
+  },
+  io::{
+    Result,
+    Write
+  },
+};
 
-pub type Value = serde_json::Value;
+use serde_json::Value as JSONValue;
+
+pub type Value = JSONValue;
 pub type JSON = HashMap<String, JSONValue>;
 
 pub struct Storage {
@@ -64,10 +77,14 @@ impl Storage {
     Ok(())
   }
 
-  pub fn get(&self, key: String) -> JSONValue {
+  pub fn get(&self, key: String) -> std::result::Result<Value, KeyNotFoundError> {
     let data = &self.content;
 
-    return data[&key].clone();
+    if !data.contains_key(&key) {
+      return Err(KeyNotFoundError);
+    }
+
+    Ok(data[&key].clone())
   }
 
   pub fn put(&mut self, key: String, value: JSONValue) -> Result<()> {
@@ -75,5 +92,15 @@ impl Storage {
     self.update_file()?;
 
     Ok(())
+  }
+}
+
+// Error when a key cannot be found.
+#[derive(Debug, Clone)]
+pub struct KeyNotFoundError;
+
+impl fmt::Display for KeyNotFoundError {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    write!(f, "Invalid key.")
   }
 }
