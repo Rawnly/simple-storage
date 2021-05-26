@@ -25,8 +25,8 @@ jobs:
         branch="$( git branch | grep '*' | sed 's/*//g' )"
         new_version="${{ github.event.inputs.version }}"
         old_version=$(cat Cargo.toml | grep "^version =" | awk -F"=" '{print $2}')
-        $(cat Cargo.toml | sed 's/${old_version}/${new_version}/g') > Cargo.toml
         
+        (cat Cargo.toml | sed "s/^version = \".*\"/version = \"${new_version}\"/g") > Cargo.toml
     - name: Build
       run: cargo build --verbose
     - name: Run tests
